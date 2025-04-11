@@ -1,0 +1,123 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "User API",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "http://your-ec2-public-ip:3000/api"
+      }
+    ],
+    "paths": {
+      "/login": {
+        "post": {
+          "summary": "Iniciar sesión",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": { "type": "string" },
+                    "password": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": { "description": "Token generado" },
+            "401": { "description": "Credenciales inválidas" }
+          }
+        }
+      },
+      "/users": {
+        "get": {
+          "summary": "Obtener lista de usuarios",
+          "security": [{ "bearerAuth": [] }],
+          "responses": {
+            "200": { "description": "Lista de usuarios" }
+          }
+        },
+        "post": {
+          "summary": "Crear usuario",
+          "security": [{ "bearerAuth": [] }],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": { "type": "string" },
+                    "password": { "type": "string" },
+                    "email": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": { "description": "Usuario creado" }
+          }
+        }
+      },
+      "/users/{id}": {
+        "put": {
+          "summary": "Actualizar usuario",
+          "security": [{ "bearerAuth": [] }],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": { "type": "integer" }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": { "type": "string" },
+                    "email": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": { "description": "Usuario actualizado" }
+          }
+        },
+        "delete": {
+          "summary": "Eliminar usuario",
+          "security": [{ "bearerAuth": [] }],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": { "type": "integer" }
+            }
+          ],
+          "responses": {
+            "200": { "description": "Usuario eliminado" }
+          }
+        }
+      }
+    },
+    "components": {
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      }
+    }
+  }
