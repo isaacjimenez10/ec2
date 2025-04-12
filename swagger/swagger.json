@@ -6,7 +6,7 @@
     },
     "servers": [
       {
-        "url": "http://your-ec2-public-ip:3000/api"
+        "url": "http://18.117.156.179:3000/api"
       }
     ],
     "paths": {
@@ -33,6 +33,30 @@
           }
         }
       },
+      "/register": {
+        "post": {
+          "summary": "Registrar un nuevo usuario",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": { "type": "string" },
+                    "password": { "type": "string" },
+                    "email": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": { "description": "Usuario registrado" },
+            "500": { "description": "Error en el servidor" }
+          }
+        }
+      },
       "/users": {
         "get": {
           "summary": "Obtener lista de usuarios",
@@ -42,7 +66,7 @@
           }
         },
         "post": {
-          "summary": "Crear usuario",
+          "summary": "Crear usuario (protegido)",
           "security": [{ "bearerAuth": [] }],
           "requestBody": {
             "required": true,
